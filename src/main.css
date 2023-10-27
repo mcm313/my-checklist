@@ -1,0 +1,7 @@
+:root {
+  --appbar-height: 47.5px;
+}
+
+.custom-height {
+  height: calc(100vh - var(--appbar-height));
+}
