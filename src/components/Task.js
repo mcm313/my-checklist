@@ -27,7 +27,7 @@ function Task({ taskListHandler, index, task, removeItem }) {
   };
 
   const handleToDoItemEnter = (event) => {
-    if (event.key === "Enter") {
+    if (event.keyCode === 13) {
       taskListHandler(inputValue, index);
       setDisable(false);
       if (inputValue !== "") {

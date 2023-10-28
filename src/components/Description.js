@@ -10,7 +10,7 @@ function Description({ desc, descChangeHandler }) {
   };
 
   const handleToDoItemEnter = (event) => {
-    if (event.key === "Enter") {
+    if (event.keyCode === 13) {
       descChangeHandler(inputValue);
       setClicked(false);
     }

@@ -15,7 +15,7 @@ function TitleName({ title, titleChangeHandler }) {
   };
 
   const handleToDoItemEnter = (event) => {
-    if (event.key === "Enter") {
+    if (event.keyCode === 13) {
       titleChangeHandler(inputValue);
       setClickStatus("unclicked");
     }
