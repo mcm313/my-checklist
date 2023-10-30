@@ -9,14 +9,12 @@ function Description({ desc, descChangeHandler }) {
     setInputValue(target.value);
   };
 
-  const handleToDoItemEnter = (event) => {
-    if (event.keyCode === 13) {
-      descChangeHandler(inputValue);
-      setClicked(false);
-    }
+  const handleOnBlur = (event) => {
+    descChangeHandler(inputValue);
+    setClicked(false);
   };
 
-  const handleToDoItemClick = () => {
+  const handleClick = () => {
     setClicked(true);
   };
   return (
@@ -28,14 +26,14 @@ function Description({ desc, descChangeHandler }) {
           size="small"
           margin="normal"
           onChange={handleInputChange}
-          onKeyDown={handleToDoItemEnter}
+          onBlur={handleOnBlur}
           value={inputValue}
           placeholder={desc}
           sx={{ height: 25, fontSize: 22, p: 1, pt: 3 }}
         />
       ) : (
         <Button
-          onClick={handleToDoItemClick}
+          onClick={handleClick}
           disableElevation
           sx={{ textAlign: "left", color: "#141220" }}
         >

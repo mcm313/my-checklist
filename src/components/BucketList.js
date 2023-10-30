@@ -4,11 +4,12 @@ import Description from "./Description";
 import Task from "./Task";
 import BucketListDrawer from "./BucketListDrawer";
 import { Grid } from "@mui/material";
-import List from "./List";
 import { useParams } from "react-router-dom";
 
 function BucketList() {
-  let id = useParams();
+  const params = useParams();
+  const id = params.bucketlistId;
+
   const storedBucketlists = JSON.parse(localStorage.getItem("bucketlists"));
 
   const BLSInitialState = () => {
@@ -19,83 +20,79 @@ function BucketList() {
     }
   };
 
-  const [bucketlists, setBucketlists] = useState(BLSInitialState);
+  const [bucketlists, setBucketlists] = useState(BLSInitialState());
 
   useEffect(() => {
     localStorage.setItem("bucketlists", JSON.stringify(bucketlists));
   }, [bucketlists]);
 
   const BLInitialState = () => {
-    let currBucketlist = {
-      id: id.bucketlistId,
-      name: "UNTITLED",
+    let selList = {
+      id: id,
+      name: "Untitled",
       desc: "Description..",
-      list: [""],
-      clist: [],
-      dlist: [],
+      list: [{ index: Date.now(), task: "", type: "new" }],
     };
-    if (bucketlists.length === 0) {
-      return currBucketlist;
-    } else {
-      for (let i = 0; i < bucketlists.length; i++) {
-        if (bucketlists[i].id === id.bucketlistId) {
-          currBucketlist = bucketlists[i];
-          return currBucketlist;
-        } else {
-          return currBucketlist;
-        }
+    bucketlists.forEach((e) => {
+      if (e.id === id) {
+        selList = e;
       }
-    }
+    });
+    return selList;
   };
 
-  const [bucketlist, setBucketlist] = useState(BLInitialState);
-
-  const [title, setTitle] = useState(bucketlist.name);
-  const [desc, setDesc] = useState(bucketlist.desc);
-  const [taskList, setTaskList] = useState(bucketlist.list);
-  const [completedList, setCompletedList] = useState(bucketlist.clist);
-  const [deletedList, setDeletedList] = useState(bucketlist.dlist);
+  const [selectedlist, setSelectedlist] = useState(BLInitialState());
+  const list = selectedlist.list.filter((item) => item.type === "new");
+  const clist = selectedlist.list.filter(
+    (item) => item.type === "new" || item.type === "completed"
+  );
+  const dlist = selectedlist.list.filter(
+    (item) => item.type === "new" || item.type === "deleted"
+  );
 
   const [completedTicked, setCompletedTicked] = useState(false);
   const [deletedTicked, setDeletedTicked] = useState(false);
+  const [currEditing, setCurrEditing] = useState(null);
 
   const titleChangeHandler = (newTitle) => {
-    setTitle(newTitle);
+    setSelectedlist({ ...selectedlist, name: newTitle });
   };
 
   const descChangeHandler = (newDesc) => {
-    setDesc(newDesc);
+    setSelectedlist({ ...selectedlist, desc: newDesc });
   };
 
-  const taskListHandler = (inputValue, index) => {
-    const updatedTaskList = taskList.map((e, i) => {
-      if (i === index) {
-        return inputValue;
+  const currEditChangeHandler = (index) => {
+    setCurrEditing(index);
+  };
+
+  const updateListHandler = (inputValue, index, targetIndex) => {
+    const updatedList = selectedlist.list.map((e) => {
+      if (e.index === index) {
+        return { ...e, task: inputValue };
       } else {
         return e;
       }
     });
-    if (
-      index === taskList.length - 1 &&
-      taskList.length < 100 &&
-      inputValue !== ""
-    ) {
-      updatedTaskList.push("");
+    if (targetIndex === selectedlist.list.length - 1 && clist.length < 100) {
+      updatedList.push({ index: Date.now(), task: "", type: "new" });
     }
-    setTaskList(updatedTaskList);
+    setSelectedlist({ ...selectedlist, list: updatedList });
+    console.log(targetIndex);
   };
 
-  const removeItem = (type, item, targetIndex) => {
-    if (type === "completed" && item !== "") {
-      setCompletedList((prev) => [item, ...prev]);
-      setTaskList(taskList.filter((item, index) => index !== targetIndex));
-    } else if (type === "deleted" && item !== "") {
-      setDeletedList((prev) => [item, ...prev]);
-      setTaskList(taskList.filter((item, index) => index !== targetIndex));
-    }
+  const changeListTypeHandler = (type, task, targetIndex) => {
+    const updatedList = selectedlist.list.map((e) => {
+      if (e.index === targetIndex && task !== "") {
+        return { ...e, type: type };
+      } else {
+        return e;
+      }
+    });
+    setSelectedlist({ ...selectedlist, list: updatedList });
   };
 
-  const taskLeft = taskList.length - 1;
+  const taskLeft = list.length - 1;
 
   const handleCompletedTicked = () => {
     setCompletedTicked(!completedTicked);
@@ -105,44 +102,21 @@ function BucketList() {
     setDeletedTicked(!deletedTicked);
   };
 
-  const restoreItem = (type, task, targetIndex) => {
-    setTaskList((prev) => [task, ...prev]);
-    if (type === "deleted") {
-      setDeletedList(
-        deletedList.filter((item, index) => index !== targetIndex)
-      );
-    }
-    if (type === "completed") {
-      setCompletedList(
-        completedList.filter((item, index) => index !== targetIndex)
-      );
-    }
-  };
-
-  const saveBucketlist = (index) => {
-    const newBucketlist = {
-      id: id.bucketlistId,
-      name: title,
-      desc: desc,
-      list: taskList,
-      clist: completedList,
-      dlist: deletedList,
-    };
-    const newBucketlists = [newBucketlist];
-    setBucketlist(newBucketlist);
+  const saveSelectedlist = () => {
+    let updatedBucketList = [selectedlist];
     if (bucketlists.length === 0) {
-      setBucketlists(newBucketlists);
-    } else if (bucketlists.some((e) => e.id === id.bucketlistId)) {
-      const updatedBucketlists = bucketlists.map((e, i) => {
-        if (e.id === id.bucketlistId) {
-          return newBucketlist;
+      setBucketlists(updatedBucketList);
+    } else if (bucketlists.some((e) => e.id === id)) {
+      updatedBucketList = bucketlists.map((e) => {
+        if (e.id === id) {
+          return selectedlist;
         } else {
           return e;
         }
       });
-      setBucketlists(updatedBucketlists);
+      setBucketlists(updatedBucketList);
     } else {
-      setBucketlists((prev) => [newBucketlist, ...prev]);
+      setBucketlists([...bucketlists, selectedlist]);
     }
   };
 
@@ -155,48 +129,83 @@ function BucketList() {
       alignContent="start"
     >
       <Grid item xs={12}>
-        <TitleName title={title} titleChangeHandler={titleChangeHandler} />
+        <TitleName
+          title={selectedlist.name}
+          titleChangeHandler={titleChangeHandler}
+        />
       </Grid>
       <Grid item xs={12}>
-        <Description desc={desc} descChangeHandler={descChangeHandler} />
-      </Grid>
-      {completedTicked && (
-        <>
-          {completedList.map((task, index) => (
-            <List
-              task={task}
-              index={index}
-              restoreItem={restoreItem}
-              listName="completed"
-            />
-          ))}
-        </>
-      )}
-      {deletedTicked && (
-        <>
-          {deletedList.map((task, index) => (
-            <List
-              task={task}
-              index={index}
-              restoreItem={restoreItem}
-              listName="deleted"
-            />
-          ))}
-        </>
-      )}
-      {taskList.map((task, index) => (
-        <Task
-          taskListHandler={taskListHandler}
-          index={index}
-          task={task}
-          removeItem={removeItem}
+        <Description
+          desc={selectedlist.desc}
+          descChangeHandler={descChangeHandler}
         />
-      ))}
+      </Grid>
+      {completedTicked && deletedTicked ? (
+        <>
+          {selectedlist.list.map((task, i) => (
+            <Task
+              updateListHandler={updateListHandler}
+              index={task.index}
+              task={task.task}
+              type={task.type}
+              changeListTypeHandler={changeListTypeHandler}
+              currEditing={currEditing}
+              currEditChangeHandler={currEditChangeHandler}
+              targetIndex={i}
+            />
+          ))}
+        </>
+      ) : completedTicked ? (
+        <>
+          {clist.map((task, i) => (
+            <Task
+              updateListHandler={updateListHandler}
+              index={task.index}
+              task={task.task}
+              type={task.type}
+              changeListTypeHandler={changeListTypeHandler}
+              currEditing={currEditing}
+              currEditChangeHandler={currEditChangeHandler}
+              targetIndex={i}
+            />
+          ))}
+        </>
+      ) : deletedTicked ? (
+        <>
+          {dlist.map((task, i) => (
+            <Task
+              updateListHandler={updateListHandler}
+              index={task.index}
+              task={task.task}
+              type={task.type}
+              changeListTypeHandler={changeListTypeHandler}
+              currEditing={currEditing}
+              currEditChangeHandler={currEditChangeHandler}
+              targetIndex={i}
+            />
+          ))}
+        </>
+      ) : (
+        <>
+          {list.map((task, i) => (
+            <Task
+              updateListHandler={updateListHandler}
+              index={task.index}
+              task={task.task}
+              type={task.type}
+              changeListTypeHandler={changeListTypeHandler}
+              currEditing={currEditing}
+              currEditChangeHandler={currEditChangeHandler}
+              targetIndex={i}
+            />
+          ))}
+        </>
+      )}
       <BucketListDrawer
         taskLeft={taskLeft}
         handleCompletedTicked={handleCompletedTicked}
         handleDeletedTicked={handleDeletedTicked}
-        saveBucketlist={saveBucketlist}
+        saveSelectedlist={saveSelectedlist}
       />
     </Grid>
   );

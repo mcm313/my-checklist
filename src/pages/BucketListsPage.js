@@ -21,8 +21,8 @@ function BucketListsPage() {
         <b>BUCKETLIST</b>
       </Typography>
       <Box p={5}>
-        {storedBucketlists.map((i, index) => (
-          <BucketListCard item={i} index={index} id={i.id} />
+        {storedBucketlists.map((i) => (
+          <BucketListCard item={i} id={i.id} />
         ))}
       </Box>
     </Container>

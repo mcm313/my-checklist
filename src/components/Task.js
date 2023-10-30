@@ -1,90 +1,76 @@
-import {
-  Button,
-  Checkbox,
-  Divider,
-  Grid,
-  IconButton,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Checkbox, Divider, Grid, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import "../main.css";
 import { DeleteOutline } from "@mui/icons-material";
+import InputTask from "./InputTask";
+import DisplayTask from "./DisplayTask";
+import Tickbox from "./Tickbox";
+import DeleteButton from "./DeleteButton";
 
-function Task({ taskListHandler, index, task, removeItem }) {
+function Task({
+  updateListHandler,
+  index,
+  task,
+  type,
+  changeListTypeHandler,
+  currEditing,
+  currEditChangeHandler,
+  targetIndex,
+}) {
   const [inputValue, setInputValue] = useState("");
-  const [updated, setUpdated] = useState(true);
   const [disable, setDisable] = useState(false);
 
   const handleInputChange = ({ target }) => {
     setInputValue(target.value);
   };
 
-  const handleToDoItemClick = () => {
+  const handleClick = (index) => {
     setInputValue(task);
-    setUpdated(false);
     setDisable(true);
+    currEditChangeHandler(index);
   };
 
-  const handleToDoItemEnter = (event) => {
-    if (event.keyCode === 13) {
-      taskListHandler(inputValue, index);
+  const handleOnBlur = (event) => {
+    if (inputValue !== "") {
+      updateListHandler(inputValue, index, targetIndex);
       setDisable(false);
-      if (inputValue !== "") {
-        setUpdated(true);
-      }
+      currEditChangeHandler(null);
     }
   };
 
   return (
     <Grid container alignItems="center">
-      <Checkbox
-        onClick={() => removeItem("completed", task, index)}
-        checked={false}
-        disabled={disable}
+      <Tickbox
+        task={task}
+        index={index}
+        type={type}
+        changeListTypeHandler={changeListTypeHandler}
+        disable={disable}
       />
-      {updated ? (
-        <>
-          <Button
-            onClick={handleToDoItemClick}
-            disableElevation
-            sx={{ textAlign: "left", color: "#141220" }}
-          >
-            <Typography variant="body1" sx={{ minWidth: 310 }}>
-              {task}
-            </Typography>
-          </Button>
-          <IconButton
-            onClick={() => removeItem("deleted", task, index)}
-            key={index}
-          >
-            <DeleteOutline />
-          </IconButton>
-          <Grid item xs={12}>
-            <Divider variant="middle" sx={{ maxWidth: 355 }} />
-          </Grid>
-        </>
+      {currEditing === index && type === "new" ? (
+        <InputTask
+          inputValue={inputValue}
+          handleInputChange={handleInputChange}
+          handleOnBlur={handleOnBlur}
+        />
       ) : (
-        <>
-          <TextField
-            id="standard-basic"
-            variant="standard"
-            size="small"
-            margin="normal"
-            onChange={handleInputChange}
-            onKeyDown={handleToDoItemEnter}
-            value={inputValue}
-            sx={{ minWidth: 310 }}
-          />
-          <IconButton
-            onClick={() => removeItem("deleted", task, index)}
-            key={index}
-            disabled={disable}
-          >
-            <DeleteOutline />
-          </IconButton>
-        </>
+        <DisplayTask
+          task={task}
+          index={index}
+          type={type}
+          handleClick={handleClick}
+        />
       )}
+      <DeleteButton
+        task={task}
+        index={index}
+        type={type}
+        changeListTypeHandler={changeListTypeHandler}
+        disable={disable}
+      />
+      <Grid item xs={12}>
+        <Divider variant="middle" sx={{ maxWidth: 355 }} />
+      </Grid>
     </Grid>
   );
 }

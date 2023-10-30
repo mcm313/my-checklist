@@ -6,7 +6,7 @@ function TitleName({ title, titleChangeHandler }) {
   const [clickStatus, setClickStatus] = useState("unclicked");
   const [inputValue, setInputValue] = useState("");
 
-  const handleToDoItemClick = () => {
+  const handleClick = () => {
     setClickStatus("clicked");
   };
 
@@ -14,17 +14,15 @@ function TitleName({ title, titleChangeHandler }) {
     setInputValue(target.value);
   };
 
-  const handleToDoItemEnter = (event) => {
-    if (event.keyCode === 13) {
-      titleChangeHandler(inputValue);
-      setClickStatus("unclicked");
-    }
+  const handleOnBlur = (event) => {
+    titleChangeHandler(inputValue);
+    setClickStatus("unclicked");
   };
 
   return (
     <>
       {clickStatus === "unclicked" ? (
-        <Button onClick={handleToDoItemClick}>
+        <Button onClick={handleClick}>
           <Typography variant="h4" component="h1" sx={{ color: "#141220" }}>
             <b>{title} BUCKETLIST</b>
           </Typography>
@@ -32,7 +30,7 @@ function TitleName({ title, titleChangeHandler }) {
       ) : (
         <InputBase
           onChange={handleInputChange}
-          onKeyDown={handleToDoItemEnter}
+          onBlur={handleOnBlur}
           value={inputValue}
           placeholder={title}
           sx={{ height: 35, fontSize: 33, p: 1, pt: 3 }}

@@ -8,23 +8,16 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 
-function BucketListCard({ item, index, id }) {
-  let bgColor = "";
-  if (index % 2 === 0) {
-    bgColor = "#febb2c";
-  } else {
-    bgColor = "#141220";
-  }
-
-  const totalLength = item.clist.length + item.list.length - 1;
+function BucketListCard({ item, id }) {
+  const list = item.list.filter((item) => item.type === "new");
+  const clist = item.list.filter((item) => item.type === "completed");
+  const totalLength = clist.length + list.length - 1;
 
   return (
     <Card
       sx={{
         minWidth: 275,
         maxWidth: 500,
-        backgroundColor: { bgColor },
-        color: "fffffb",
         margin: 3,
       }}
     >
@@ -37,7 +30,7 @@ function BucketListCard({ item, index, id }) {
       <CardActions>
         <Link to={id}>
           <Button size="small">
-            {item.clist.length}/{totalLength} Task Left
+            {clist.length}/{totalLength} Task Left
           </Button>
         </Link>
       </CardActions>

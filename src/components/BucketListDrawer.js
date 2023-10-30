@@ -33,7 +33,7 @@ function BucketListDrawer({
   taskLeft,
   handleCompletedTicked,
   handleDeletedTicked,
-  saveBucketlist,
+  saveSelectedlist,
 }) {
   const [clicked, setClicked] = useState(false);
 
@@ -70,7 +70,7 @@ function BucketListDrawer({
           </CardContent>
         </Card>
         <Divider />
-        <ColorButton onClick={saveBucketlist}>SAVE</ColorButton>
+        <ColorButton onClick={saveSelectedlist}>SAVE</ColorButton>
         <ColorButton onClick={handleCompletedTicked}>
           COMPLETED ITEMS
         </ColorButton>
