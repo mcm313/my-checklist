@@ -11,11 +11,11 @@ function DisplayTask({ matches, task, index, type, handleClick }) {
           sx={{ textAlign: "left", color: "#141220" }}
         >
           {matches ? (
-            <Typography variant="body1" sx={{ minWidth: 300 }}>
+            <Typography variant="body1" sx={{ minWidth: 310 }}>
               {task}
             </Typography>
           ) : (
-            <Typography variant="body1" sx={{ minWidth: 310 }}>
+            <Typography variant="body1" sx={{ minWidth: 300 }}>
               {task}
             </Typography>
           )}

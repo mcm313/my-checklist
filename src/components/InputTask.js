@@ -13,7 +13,7 @@ function InputTask({ matches, inputValue, handleInputChange, handleOnBlur }) {
           onChange={handleInputChange}
           onBlur={handleOnBlur}
           value={inputValue}
-          sx={{ minWidth: 300 }}
+          sx={{ minWidth: 310 }}
         />
       ) : (
         <InputBase
@@ -24,7 +24,7 @@ function InputTask({ matches, inputValue, handleInputChange, handleOnBlur }) {
           onChange={handleInputChange}
           onBlur={handleOnBlur}
           value={inputValue}
-          sx={{ minWidth: 310 }}
+          sx={{ minWidth: 300 }}
         />
       )}
     </>
