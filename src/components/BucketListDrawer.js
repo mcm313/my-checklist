@@ -1,4 +1,4 @@
-import { Menu } from "@mui/icons-material";
+import { Celebration, Menu } from "@mui/icons-material";
 import {
   Drawer,
   Fab,
@@ -15,6 +15,7 @@ import {
 import React, { useState } from "react";
 import "../main.css";
 import styled from "@emotion/styled";
+import Footer from "./Footer";
 
 const drawerWidth = 240;
 
@@ -30,7 +31,9 @@ const ColorButton = styled(Button)(({ theme }) => ({
 }));
 
 function BucketListDrawer({
-  taskLeft,
+  title,
+  list,
+  clist,
   handleCompletedTicked,
   handleDeletedTicked,
   saveSelectedlist,
@@ -40,6 +43,8 @@ function BucketListDrawer({
   function toggleDrawer(event) {
     setClicked(!clicked);
   }
+
+  const taskLeft = list.length - 1;
 
   const drawer = (
     <>
@@ -64,9 +69,28 @@ function BucketListDrawer({
           }}
         >
           <CardContent>
-            <Typography variant="h6" component="div" textAlign="center">
-              {taskLeft} Task Left
-            </Typography>
+            {taskLeft === 0 && clist.length !== 0 ? (
+              <Grid container justifyContent="center">
+                <Grid item>
+                  <Celebration />
+                </Grid>
+                <Grid item>
+                  <Typography variant="h6" component="div" textAlign="center">
+                    <b>CONGRATULATIONS!</b>
+                  </Typography>
+                  <Typography variant="h6" component="div" textAlign="center">
+                    You have completed your {title} Bucketlist
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Celebration />
+                </Grid>
+              </Grid>
+            ) : (
+              <Typography variant="h6" component="div" textAlign="center">
+                {taskLeft} Task Left
+              </Typography>
+            )}
           </CardContent>
         </Card>
         <Divider />
@@ -76,6 +100,7 @@ function BucketListDrawer({
         </ColorButton>
         <ColorButton onClick={handleDeletedTicked}>DELETED ITEMS</ColorButton>
       </Paper>
+      <Footer />
     </>
   );
 

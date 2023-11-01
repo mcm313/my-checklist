@@ -1,3 +1,4 @@
+import { Celebration } from "@mui/icons-material";
 import {
   Button,
   Card,
@@ -26,6 +27,18 @@ function BucketListCard({ item, id }) {
           <b>{item.name} Bucketlist</b>
         </Typography>
         <Typography variant="body2">{item.desc}</Typography>
+        {clist.length === totalLength && clist.length !== 0 && (
+          <>
+            <br></br>
+            <Celebration sx={{ color: "#febb2c" }} />
+            <Typography variant="body1" component="div">
+              <b>CONGRATULATIONS!</b>
+            </Typography>
+            <Typography variant="body1" component="div">
+              You have completed your Bucketlist
+            </Typography>
+          </>
+        )}
       </CardContent>
       <CardActions>
         <Link to={id}>

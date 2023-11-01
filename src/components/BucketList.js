@@ -49,6 +49,7 @@ function BucketList() {
   const dlist = selectedlist.list.filter(
     (item) => item.type === "new" || item.type === "deleted"
   );
+  const title = selectedlist.name;
 
   const [completedTicked, setCompletedTicked] = useState(false);
   const [deletedTicked, setDeletedTicked] = useState(false);
@@ -74,11 +75,12 @@ function BucketList() {
         return e;
       }
     });
-    if (targetIndex === selectedlist.list.length - 1 && clist.length < 100) {
+    if (targetIndex === list.length - 1 && clist.length + list.length < 100) {
       updatedList.push({ index: Date.now(), task: "", type: "new" });
     }
     setSelectedlist({ ...selectedlist, list: updatedList });
     console.log(targetIndex);
+    console.log(list);
   };
 
   const changeListTypeHandler = (type, task, targetIndex) => {
@@ -91,8 +93,6 @@ function BucketList() {
     });
     setSelectedlist({ ...selectedlist, list: updatedList });
   };
-
-  const taskLeft = list.length - 1;
 
   const handleCompletedTicked = () => {
     setCompletedTicked(!completedTicked);
@@ -202,7 +202,9 @@ function BucketList() {
         </>
       )}
       <BucketListDrawer
-        taskLeft={taskLeft}
+        title={title}
+        list={list}
+        clist={clist}
         handleCompletedTicked={handleCompletedTicked}
         handleDeletedTicked={handleDeletedTicked}
         saveSelectedlist={saveSelectedlist}

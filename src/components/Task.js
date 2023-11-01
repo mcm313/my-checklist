@@ -1,7 +1,6 @@
-import { Checkbox, Divider, Grid, IconButton } from "@mui/material";
+import { Divider, Grid, useMediaQuery } from "@mui/material";
 import React, { useState } from "react";
 import "../main.css";
-import { DeleteOutline } from "@mui/icons-material";
 import InputTask from "./InputTask";
 import DisplayTask from "./DisplayTask";
 import Tickbox from "./Tickbox";
@@ -17,6 +16,8 @@ function Task({
   currEditChangeHandler,
   targetIndex,
 }) {
+  const matches = useMediaQuery("(min-width:450px)");
+
   const [inputValue, setInputValue] = useState("");
   const [disable, setDisable] = useState(false);
 
@@ -49,12 +50,14 @@ function Task({
       />
       {currEditing === index && type === "new" ? (
         <InputTask
+          matches={matches}
           inputValue={inputValue}
           handleInputChange={handleInputChange}
           handleOnBlur={handleOnBlur}
         />
       ) : (
         <DisplayTask
+          matches={matches}
           task={task}
           index={index}
           type={type}
