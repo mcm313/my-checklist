@@ -15,7 +15,7 @@ function DisplayTask({ matches, task, index, type, handleClick }) {
               {task}
             </Typography>
           ) : (
-            <Typography variant="body1" sx={{ minWidth: 300 }}>
+            <Typography variant="body1" sx={{ minWidth: 250 }}>
               {task}
             </Typography>
           )}
