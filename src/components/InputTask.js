@@ -24,7 +24,7 @@ function InputTask({ matches, inputValue, handleInputChange, handleOnBlur }) {
           onChange={handleInputChange}
           onBlur={handleOnBlur}
           value={inputValue}
-          sx={{ minWidth: 250 }}
+          sx={{ minWidth: 225 }}
         />
       )}
     </>

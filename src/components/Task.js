@@ -72,7 +72,11 @@ function Task({
         disable={disable}
       />
       <Grid item xs={12}>
-        <Divider variant="middle" sx={{ maxWidth: 355 }} />
+        {matches ? (
+          <Divider variant="middle" sx={{ maxWidth: 370 }} />
+        ) : (
+          <Divider variant="middle" sx={{ maxWidth: 290 }} />
+        )}
       </Grid>
     </Grid>
   );

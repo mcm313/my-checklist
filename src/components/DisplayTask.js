@@ -15,16 +15,22 @@ function DisplayTask({ matches, task, index, type, handleClick }) {
               {task}
             </Typography>
           ) : (
-            <Typography variant="body1" sx={{ minWidth: 250 }}>
+            <Typography variant="body1" sx={{ minWidth: 225 }}>
               {task}
             </Typography>
           )}
         </Button>
       ) : (
         <Button disableElevation sx={{ textAlign: "left", color: "#141220" }}>
-          <Typography variant="body1" sx={{ minWidth: 310 }}>
-            {task}
-          </Typography>
+          {matches ? (
+            <Typography variant="body1" sx={{ minWidth: 310 }}>
+              {task}
+            </Typography>
+          ) : (
+            <Typography variant="body1" sx={{ minWidth: 225 }}>
+              {task}
+            </Typography>
+          )}
         </Button>
       )}
     </>

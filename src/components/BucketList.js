@@ -127,6 +127,7 @@ function BucketList() {
       overflow="auto"
       padding={3}
       alignContent="start"
+      justifyContent="center"
     >
       <Grid item xs={12}>
         <TitleName
