@@ -32,7 +32,6 @@ const ColorButton = styled(Button)(({ theme }) => ({
 
 function BucketListDrawer({
   title,
-  list,
   clist,
   handleCompletedTicked,
   handleDeletedTicked,
@@ -44,7 +43,10 @@ function BucketListDrawer({
     setClicked(!clicked);
   }
 
-  const taskLeft = list.length - 1;
+  const newlist = clist.filter((item) => item.type === "new");
+  const completedlist = clist.filter((item) => item.type === "completed");
+
+  const taskLeft = newlist.length - 1;
 
   const drawer = (
     <>
@@ -69,7 +71,7 @@ function BucketListDrawer({
           }}
         >
           <CardContent>
-            {taskLeft === 0 && clist.length !== 0 ? (
+            {taskLeft === 0 && completedlist.length !== 0 ? (
               <Grid container justifyContent="center">
                 <Grid item>
                   <Celebration />
