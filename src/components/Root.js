@@ -1,7 +1,7 @@
 import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import MainBar from "./MainBar";
-import HomePage, { loader as homeLoader } from "../pages/HomePage";
+import HomePage from "../pages/HomePage";
 import BucketListsPage from "../pages/BucketListsPage";
 import BucketList from "./BucketList";
 
