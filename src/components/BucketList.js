@@ -204,7 +204,6 @@ function BucketList() {
       )}
       <BucketListDrawer
         title={title}
-        list={list}
         clist={clist}
         handleCompletedTicked={handleCompletedTicked}
         handleDeletedTicked={handleDeletedTicked}
