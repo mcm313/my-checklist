@@ -17,6 +17,7 @@ function Task({
   targetIndex,
 }) {
   const matches = useMediaQuery("(min-width:450px)");
+  const matches2 = useMediaQuery("(max-width:320px)");
 
   const [inputValue, setInputValue] = useState("");
   const [disable, setDisable] = useState(false);
@@ -51,6 +52,7 @@ function Task({
       {currEditing === index && type === "new" ? (
         <InputTask
           matches={matches}
+          matches2={matches2}
           inputValue={inputValue}
           handleInputChange={handleInputChange}
           handleOnBlur={handleOnBlur}
@@ -58,6 +60,7 @@ function Task({
       ) : (
         <DisplayTask
           matches={matches}
+          matches2={matches2}
           task={task}
           index={index}
           type={type}
@@ -72,11 +75,7 @@ function Task({
         disable={disable}
       />
       <Grid item xs={12}>
-        {matches ? (
-          <Divider variant="middle" sx={{ maxWidth: 370 }} />
-        ) : (
-          <Divider variant="middle" sx={{ maxWidth: 290 }} />
-        )}
+        <Divider variant="middle" sx={{ minWidth: 200 }} />
       </Grid>
     </Grid>
   );

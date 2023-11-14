@@ -1,7 +1,7 @@
 import { Button, Typography } from "@mui/material";
 import React from "react";
 
-function DisplayTask({ matches, task, index, type, handleClick }) {
+function DisplayTask({ matches, matches2, task, index, type, handleClick }) {
   return (
     <>
       {type === "new" ? (
@@ -14,8 +14,12 @@ function DisplayTask({ matches, task, index, type, handleClick }) {
             <Typography variant="body1" sx={{ minWidth: 310 }}>
               {task}
             </Typography>
+          ) : matches2 ? (
+            <Typography variant="body1" sx={{ minWidth: 170 }}>
+              {task}
+            </Typography>
           ) : (
-            <Typography variant="body1" sx={{ minWidth: 225 }}>
+            <Typography variant="body1" sx={{ minWidth: 210 }}>
               {task}
             </Typography>
           )}
@@ -23,11 +27,15 @@ function DisplayTask({ matches, task, index, type, handleClick }) {
       ) : (
         <Button disableElevation sx={{ textAlign: "left", color: "#141220" }}>
           {matches ? (
-            <Typography variant="body1" sx={{ minWidth: 310 }}>
+            <Typography variant="body1" sx={{ minWidth: 355 }}>
+              {task}
+            </Typography>
+          ) : matches2 ? (
+            <Typography variant="body1" sx={{ minWidth: 215 }}>
               {task}
             </Typography>
           ) : (
-            <Typography variant="body1" sx={{ minWidth: 225 }}>
+            <Typography variant="body1" sx={{ minWidth: 255 }}>
               {task}
             </Typography>
           )}
