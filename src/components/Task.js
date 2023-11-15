@@ -42,38 +42,44 @@ function Task({
 
   return (
     <Grid container alignItems="center">
-      <Tickbox
-        task={task}
-        index={index}
-        type={type}
-        changeListTypeHandler={changeListTypeHandler}
-        disable={disable}
-      />
-      {currEditing === index && type === "new" ? (
-        <InputTask
-          matches={matches}
-          matches2={matches2}
-          inputValue={inputValue}
-          handleInputChange={handleInputChange}
-          handleOnBlur={handleOnBlur}
-        />
-      ) : (
-        <DisplayTask
-          matches={matches}
-          matches2={matches2}
+      <Grid item xs={2} minWidth={43}>
+        <Tickbox
           task={task}
           index={index}
           type={type}
-          handleClick={handleClick}
+          changeListTypeHandler={changeListTypeHandler}
+          disable={disable}
         />
-      )}
-      <DeleteButton
-        task={task}
-        index={index}
-        type={type}
-        changeListTypeHandler={changeListTypeHandler}
-        disable={disable}
-      />
+      </Grid>
+      <Grid item xs={8}>
+        {currEditing === index && type === "new" ? (
+          <InputTask
+            matches={matches}
+            matches2={matches2}
+            inputValue={inputValue}
+            handleInputChange={handleInputChange}
+            handleOnBlur={handleOnBlur}
+          />
+        ) : (
+          <DisplayTask
+            matches={matches}
+            matches2={matches2}
+            task={task}
+            index={index}
+            type={type}
+            handleClick={handleClick}
+          />
+        )}
+      </Grid>
+      <Grid item xs={2} minWidth={25}>
+        <DeleteButton
+          task={task}
+          index={index}
+          type={type}
+          changeListTypeHandler={changeListTypeHandler}
+          disable={disable}
+        />
+      </Grid>
       <Grid item xs={12}>
         <Divider variant="middle" sx={{ minWidth: 200 }} />
       </Grid>
